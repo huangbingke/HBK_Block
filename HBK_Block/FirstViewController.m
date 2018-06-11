@@ -27,7 +27,7 @@ typedef void(^TestBlock)(void);
     __weak typeof(self) weakSelf = self;
     self.testBlock = ^{
         weakSelf.index = 10;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             weakSelf.index = 11;
             NSLog(@"====> %ld", weakSelf.index);
         });
@@ -50,6 +50,10 @@ typedef void(^TestBlock)(void);
     self.testBlock();
     NSLog(@"%ld", self.index);
 #endif
+}
+
+- (void)dealloc {
+    NSLog(@"======>>> 释放了 <<<======");
 }
     /*
      若从A push到B，10s之内没有pop回A的话，B中block会执行打印出来11。
